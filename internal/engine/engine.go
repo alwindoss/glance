@@ -37,8 +37,9 @@ func initialModel(directory string) (model, error) {
 	ti.Focus()
 
 	return model{
-		files:       files,
-		filtered:    files,
+		files:    files,
+		filtered: make([]FileData, 0),
+		// filtered:    files,
 		textInput:   ti,
 		cursorIndex: 0,
 	}, nil
@@ -112,6 +113,9 @@ func filterFiles(files []FileData, query string) []FileData {
 	var results []FileData
 	query = strings.ToLower(query)
 
+	if query == "" {
+		return results
+	}
 	for _, file := range files {
 		if strings.Contains(strings.ToLower(file.Path), query) || strings.Contains(strings.ToLower(file.MatchSnippet), query) {
 			results = append(results, file)
