@@ -36,6 +36,8 @@ import (
 )
 
 var searchPath string
+var query string
+var parallel int
 
 // fzfCmd represents the fzf command
 var fzfCmd = &cobra.Command{
@@ -48,7 +50,8 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		err := engine.Run(searchPath)
+		// err := engine.Run(searchPath)
+		err := engine.Search(searchPath, query, parallel)
 		if err != nil {
 			return err
 		}
@@ -69,6 +72,8 @@ func init() {
 	// is called directly, e.g.:
 	// fzfCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	fzfCmd.Flags().StringVarP(&searchPath, "search", "s", "./", "--search /opt/data/")
+	fzfCmd.Flags().IntVarP(&parallel, "parallel", "p", 4, "--parallel 5")
+	fzfCmd.Flags().StringVarP(&query, "query", "q", "", "--query 'Alwin'")
 
 	fzfCmd.MarkFlagRequired("search")
 }
